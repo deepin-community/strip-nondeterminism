@@ -1,3 +1,52 @@
+strip-nondeterminism (1.14.0-1) unstable; urgency=medium
+
+  [ Alex Muntada ]
+  * Avoid Sub::Override and break circular dependencies in debhelper.
+
+  [ Chris Lamb ]
+  * Drop Depends, Build-Depends and Makefile.PL PREREQ_PM entry for
+    libsub-override-perl.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 24 May 2024 08:55:32 +0100
+
+strip-nondeterminism (1.13.1-1) unstable; urgency=medium
+
+  [ FC Stegerman ]
+  * Update pyzip regex for latest file(1). Closes: #1028892.
+
+  [ Holger Levsen ]
+  * Bump standards version to 4.6.2, no changes needed.
+
+ -- Holger Levsen <holger@debian.org>  Sun, 15 Jan 2023 20:53:45 +0100
+
+strip-nondeterminism (1.13.0-2) unstable; urgency=medium
+
+  [ Holger Levsen ]
+  * d/control: libfile-stripnondeterminism-perl: set Multi-Arch: foreign
+  * Bump standards version to 4.6.1
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Database, Bug-Submit.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 30 Nov 2022 19:29:22 +0100
+
+strip-nondeterminism (1.13.0-1) unstable; urgency=medium
+
+  [ Mattia Rizzolo ]
+  * dh_strip_nondeterminism: use get_non_binnmu_date_epoch() when available.
+    Closes: #999665
+  * Add a lintian overrides for some false positive tags.
+
+ -- Holger Levsen <holger@debian.org>  Mon, 20 Dec 2021 18:12:02 +0100
+
+strip-nondeterminism (1.12.1-1) unstable; urgency=medium
+
+  [ Jonas Witschel ]
+  * Do not fail on JAR archives containing invalid members with a .jar
+    extension. (Closes: reproducible-builds/strip-nondeterminism!13)
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 22 Nov 2021 10:56:48 -0800
+
 strip-nondeterminism (1.12.0-2) unstable; urgency=medium
 
   [ Chris Lamb ]

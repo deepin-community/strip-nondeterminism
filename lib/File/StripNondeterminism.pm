@@ -26,7 +26,7 @@ use POSIX qw(tzset);
 
 our($VERSION, $canonical_time, $clamp_time, $verbose);
 
-$VERSION = '1.12.0'; # <https://semver.org/>
+$VERSION = '1.14.0'; # <https://semver.org/>
 
 sub init() {
 	$ENV{'TZ'} = 'UTC';
@@ -111,7 +111,7 @@ sub get_normalizer_for_file($) {
 	}
 
 	# pyzip - check last due to call to file(1)
-	if (_get_file_type($_) =~ m/python3 script executable \(binary data\)/) {
+	if (_get_file_type($_) =~ m/python3 script executable \((Zip archive|binary data)\)/) {
 		my $handler = _handler('pyzip');
 		return $handler
 		  if File::StripNondeterminism::handlers::pyzip::is_pyzip_file($_);

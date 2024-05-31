@@ -7,7 +7,6 @@ Build-Depends-Indep:
  libarchive-cpio-perl <!nocheck>,
  libarchive-zip-perl,
  libdevel-cover-perl,
- libsub-override-perl,
  perl,
 Maintainer: Reproducible builds folks <reproducible-builds@lists.alioth.debian.org>
 Uploaders:
@@ -16,7 +15,7 @@ Uploaders:
  Mattia Rizzolo <mattia@debian.org>,
  Chris Lamb <lamby@debian.org>,
 Rules-Requires-Root: no
-Standards-Version: 4.6.0.1
+Standards-Version: 4.6.2
 Homepage: https://reproducible-builds.org/
 Vcs-Git: https://salsa.debian.org/reproducible-builds/strip-nondeterminism.git
 Vcs-Browser: https://salsa.debian.org/reproducible-builds/strip-nondeterminism
@@ -24,10 +23,10 @@ Vcs-Browser: https://salsa.debian.org/reproducible-builds/strip-nondeterminism
 Package: libfile-stripnondeterminism-perl
 Section: perl
 Architecture: all
+Multi-Arch: foreign
 Depends:
  file,
  libarchive-zip-perl,
- libsub-override-perl,
  ${misc:Depends},
  ${perl:Depends},
 Recommends:

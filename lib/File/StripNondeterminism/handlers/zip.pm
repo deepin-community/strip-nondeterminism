@@ -22,10 +22,10 @@ package File::StripNondeterminism::handlers::zip;
 use strict;
 use warnings;
 
+use File::Basename qw(basename);
 use File::Temp;
 use File::StripNondeterminism;
 use Archive::Zip qw/:CONSTANTS :ERROR_CODES/;
-use Sub::Override;
 
 =head1 DEPRECATION PLANS
 
@@ -65,12 +65,18 @@ sub normalize_member($$) {
 
 	# Extract the member to a temporary file.
 	my $tempdir = File::Temp->newdir();
-	my $filename = "$tempdir/member";
+	my $filename = "$tempdir/" . basename($member->fileName());
 	my $original_size = $member->compressedSize();
 	$member->extractToFileNamed($filename);
 	chmod(0600, $filename);
 	$member->{'compressedSize'} = $original_size
 	  ; # Work around https://github.com/redhotpenguin/perl-Archive-Zip/issues/11
+
+	$normalizer = File::StripNondeterminism::get_normalizer_for_file($filename) unless defined $normalizer;
+	if (not defined $normalizer) {
+		warn "strip-nondeterminism: unknown file type of " . $member->fileName();
+		return;
+	}
 
 	# Normalize the temporary file.
 	if ($normalizer->($filename)) {
@@ -258,17 +264,20 @@ sub normalize {
 	my @overrides = map {
 		my $full_name = "Archive::Zip::Member::$_";
 		my $orig_sub = \&$full_name;
-		Sub::Override->new(
-			$full_name => sub {
-				my $result = $orig_sub->(@_);
-				return defined($result) ?
-					normalize_extra_fields($canonical_time, $result) : $result;
-			}
-		);
+
+		no warnings qw(redefine);
+		no strict qw(refs);
+		*{"Archive\::Zip\::Member\::$_"} = sub {
+			my $result = $orig_sub->(@_);
+			return defined($result) ?
+				normalize_extra_fields($canonical_time, $result) : $result;
+		};
+
+		sub { *{"Archive\::Zip\::Member\::$_"} = $orig_sub };
 	} qw(cdExtraField localExtraField);
 
 	return 0 unless $zip->overwrite() == AZ_OK;
-	$_->restore for @overrides;
+	$_->() for @overrides;
 	chmod($old_perms, $zip_filename);
 	return 1;
 }
